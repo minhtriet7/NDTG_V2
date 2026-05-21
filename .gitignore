@@ -1,0 +1,50 @@
+# ==========================================
+# 1. FILE BẢO MẬT (CỰC KỲ QUAN TRỌNG)
+# ==========================================
+.env
+client/.env
+server/.env
+
+# ==========================================
+# 2. CLIENT (NODE.JS / VITE / REACT)
+# ==========================================
+# Thư mục chứa thư viện nặng
+node_modules/
+client/node_modules/
+
+# Thư mục build sản phẩm (Vite thường xuất ra thư mục dist)
+dist/
+client/dist/
+build/
+
+# File log của npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ==========================================
+# 3. SERVER (PYTHON)
+# ==========================================
+# Thư mục môi trường ảo
+venv/
+server/venv/
+env/
+.env_python/
+
+# File cache và file biên dịch của Python
+__pycache__/
+server/__pycache__/
+*.py[cod]
+*$py.class
+
+# ==========================================
+# 4. HỆ ĐIỀU HÀNH & EDITOR (VS CODE, MAC, WIN)
+# ==========================================
+# Mac OS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# VS Code
+.vscode/

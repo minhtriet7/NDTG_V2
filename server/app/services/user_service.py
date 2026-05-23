@@ -11,6 +11,10 @@ class UserService:
             user.full_name = data.full_name
         if data.avatar_url is not None:
             user.avatar_url = data.avatar_url
+        if data.phone is not None: 
+            user.phone = data.phone
+        if data.country is not None: 
+            user.country = data.country    
             
         await user.save()
         return user

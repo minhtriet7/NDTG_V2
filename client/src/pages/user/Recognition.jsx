@@ -4,8 +4,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 import { useAuthStore } from "../../store/authStore";
-import { useLanguageStore } from "../../store/languageStore";
 import { useRecognitionStore } from "../../store/recognitionStore";
+import { useAppStore } from "../../store/appStore"; // <-- LẤY CẢ LANG VÀ THEME TỪ ĐÂY
 
 import {
   Upload,
@@ -28,7 +28,11 @@ import {
 
 export default function Recognition() {
   const { user, token } = useAuthStore();
-  const { lang } = useLanguageStore();
+
+  // 🌟 FIX LỖI: Lấy cả lang và theme từ chung 1 store
+  const { lang, theme } = useAppStore();
+  const isDark = theme === "dark";
+
   const { currentScanSession, setScanSession, clearScanSession } =
     useRecognitionStore();
 
@@ -77,6 +81,7 @@ export default function Recognition() {
       btnViewOld: "View previous result",
       btnBuyToken: "Buy tokens",
       errNoToken: "Not enough tokens",
+      errNoTokenDesc: "You need at least 1 token to run a banknote scan.",
       errorSize: "File exceeds the 5MB limit.",
       errorSelect: "Please select an image first.",
       errorAPI: "Analysis failed. Please try again later.",
@@ -122,6 +127,7 @@ export default function Recognition() {
       btnViewOld: "Xem lại kết quả cũ",
       btnBuyToken: "Mua Token",
       errNoToken: "Không đủ Token",
+      errNoTokenDesc: "Bạn cần ít nhất 1 token để chạy quét tiền giấy.",
       errorSize: "Dung lượng tệp vượt quá giới hạn 5MB.",
       errorSelect: "Vui lòng chọn hình ảnh trước.",
       errorAPI: "Phân tích thất bại. Vui lòng thử lại sau.",
@@ -245,8 +251,6 @@ export default function Recognition() {
         },
       );
 
-      console.log("SCAN API RESPONSE:", res.data);
-
       const session = {
         previewUrl,
         fileName: selectedFileMeta?.name || selectedFile?.name,
@@ -284,25 +288,39 @@ export default function Recognition() {
     !isAnalyzing && ((selectedFile && hasEnoughTokens) || hasExistingSession);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 p-4 md:p-8 font-sans pb-20">
+    <div
+      className={`min-h-screen font-sans pb-20 p-4 md:p-8 transition-colors duration-300 ${isDark ? "bg-slate-950 text-slate-200" : "bg-slate-50 text-slate-900"}`}
+    >
       <div className="max-w-7xl mx-auto space-y-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pt-2">
           <div className="max-w-2xl">
-            <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+            <h1
+              className={`text-3xl font-black tracking-tight ${isDark ? "text-white" : "text-slate-900"}`}
+            >
               {t.title}
             </h1>
-            <p className="text-slate-500 mt-2 leading-relaxed">{t.subtitle}</p>
+            <p
+              className={`mt-2 leading-relaxed ${isDark ? "text-slate-400" : "text-slate-500"}`}
+            >
+              {t.subtitle}
+            </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-1 gap-3">
             <div
-              className={`flex items-center gap-3 px-5 py-3 bg-white border rounded-2xl shadow-sm ${
+              className={`flex items-center gap-3 px-5 py-3 border rounded-2xl shadow-sm transition-colors ${
                 !hasEnoughTokens
-                  ? "border-amber-200 bg-amber-50/60"
-                  : "border-slate-200"
+                  ? isDark
+                    ? "border-amber-500/50 bg-amber-900/20"
+                    : "border-amber-200 bg-amber-50/60"
+                  : isDark
+                    ? "border-slate-800 bg-slate-900/50"
+                    : "border-slate-200 bg-white"
               }`}
             >
-              <div className="bg-teal-100/70 p-2 rounded-xl">
+              <div
+                className={`p-2 rounded-xl ${isDark ? "bg-teal-900/40" : "bg-teal-100/70"}`}
+              >
                 <Coins className="w-5 h-5 text-teal-600" />
               </div>
               <div>
@@ -311,7 +329,13 @@ export default function Recognition() {
                 </p>
                 <p
                   className={`text-xl font-black leading-none ${
-                    !hasEnoughTokens ? "text-amber-600" : "text-slate-900"
+                    !hasEnoughTokens
+                      ? isDark
+                        ? "text-amber-500"
+                        : "text-amber-600"
+                      : isDark
+                        ? "text-white"
+                        : "text-slate-900"
                   }`}
                 >
                   {user?.token_balance || 0}
@@ -322,13 +346,23 @@ export default function Recognition() {
         </div>
 
         {!hasEnoughTokens && !hasExistingSession && (
-          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div
+            className={`border rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${isDark ? "bg-amber-900/20 border-amber-500/30" : "bg-amber-50 border-amber-200"}`}
+          >
             <div className="flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5" />
+              <AlertCircle
+                className={`w-5 h-5 mt-0.5 ${isDark ? "text-amber-500" : "text-amber-600"}`}
+              />
               <div>
-                <p className="font-bold text-amber-900">{t.errNoToken}</p>
-                <p className="text-sm text-amber-700">
-                  You need at least 1 token to run a banknote scan.
+                <p
+                  className={`font-bold ${isDark ? "text-amber-400" : "text-amber-900"}`}
+                >
+                  {t.errNoToken}
+                </p>
+                <p
+                  className={`text-sm ${isDark ? "text-amber-200/70" : "text-amber-700"}`}
+                >
+                  {t.errNoTokenDesc}
                 </p>
               </div>
             </div>
@@ -344,13 +378,19 @@ export default function Recognition() {
 
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 md:gap-8">
           <div className="xl:col-span-7 space-y-6">
-            <div className="bg-white p-2 rounded-[2rem] shadow-sm border border-slate-200">
+            <div
+              className={`p-2 rounded-[2rem] shadow-sm border ${isDark ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200"}`}
+            >
               <div className="p-6 md:p-8">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
-                  <h2 className="text-xl font-bold text-slate-900">
+                  <h2
+                    className={`text-xl font-bold ${isDark ? "text-white" : "text-slate-900"}`}
+                  >
                     {t.uploadTitle}
                   </h2>
-                  <span className="w-fit text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full flex items-center gap-1.5">
+                  <span
+                    className={`w-fit text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1.5 ${isDark ? "bg-slate-800 text-slate-300" : "bg-slate-100 text-slate-500"}`}
+                  >
                     <ImageIcon className="w-3.5 h-3.5" />
                     JPG, PNG, WEBP
                   </span>
@@ -364,18 +404,26 @@ export default function Recognition() {
                     onClick={() => fileInputRef.current?.click()}
                     className={`relative border-2 border-dashed rounded-[1.5rem] p-8 md:p-12 text-center cursor-pointer transition-all duration-300 flex flex-col items-center justify-center min-h-[400px] ${
                       isDragging
-                        ? "border-teal-500 bg-teal-50 scale-[1.01]"
-                        : "border-slate-200 bg-slate-50 hover:border-teal-300 hover:bg-slate-50/60"
+                        ? isDark
+                          ? "border-teal-500 bg-teal-900/20 scale-[1.01]"
+                          : "border-teal-500 bg-teal-50 scale-[1.01]"
+                        : isDark
+                          ? "border-slate-700 bg-slate-800/50 hover:border-teal-500 hover:bg-slate-800"
+                          : "border-slate-200 bg-slate-50 hover:border-teal-300 hover:bg-slate-50/60"
                     }`}
                   >
-                    <div className="w-16 h-16 bg-white border border-slate-100 rounded-2xl shadow-sm flex items-center justify-center mb-5">
+                    <div
+                      className={`w-16 h-16 rounded-2xl shadow-sm flex items-center justify-center mb-5 border ${isDark ? "bg-slate-900 border-slate-700" : "bg-white border-slate-100"}`}
+                    >
                       <Upload
                         className={`w-7 h-7 ${
-                          isDragging ? "text-teal-600" : "text-slate-400"
+                          isDragging ? "text-teal-500" : "text-slate-400"
                         }`}
                       />
                     </div>
-                    <p className="text-lg font-bold text-slate-700 mb-1">
+                    <p
+                      className={`text-lg font-bold mb-1 ${isDark ? "text-slate-300" : "text-slate-700"}`}
+                    >
                       {t.uploadDesc}
                     </p>
                     <p className="text-sm text-slate-400 font-medium">
@@ -384,7 +432,9 @@ export default function Recognition() {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <div className="relative rounded-[1.5rem] overflow-hidden border border-slate-200 bg-slate-100 min-h-[400px] flex justify-center items-center shadow-inner">
+                    <div
+                      className={`relative rounded-[1.5rem] overflow-hidden border min-h-[400px] flex justify-center items-center shadow-inner ${isDark ? "border-slate-800 bg-slate-950" : "border-slate-200 bg-slate-100"}`}
+                    >
                       <img
                         src={previewUrl}
                         alt="Banknote preview"
@@ -405,7 +455,7 @@ export default function Recognition() {
                       {!isAnalyzing && (
                         <button
                           onClick={handleClear}
-                          className="absolute top-4 right-4 p-2 bg-white/90 backdrop-blur text-slate-600 hover:text-rose-600 hover:bg-white rounded-xl shadow-sm border border-slate-100 transition-all active:scale-95"
+                          className={`absolute top-4 right-4 p-2 rounded-xl shadow-sm border transition-all active:scale-95 ${isDark ? "bg-slate-900/80 backdrop-blur text-slate-300 hover:text-rose-400 border-slate-700" : "bg-white/90 backdrop-blur text-slate-600 hover:text-rose-600 border-slate-100"}`}
                           title={t.clear}
                         >
                           <X className="w-5 h-5" />
@@ -414,22 +464,28 @@ export default function Recognition() {
                     </div>
 
                     {selectedFileMeta && (
-                      <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div
+                        className={`border rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${isDark ? "bg-slate-900 border-slate-800" : "bg-slate-50 border-slate-100"}`}
+                      >
                         <div>
                           <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                             {t.fileSelected}
                           </p>
-                          <p className="text-sm font-bold text-slate-800 mt-1">
+                          <p
+                            className={`text-sm font-bold mt-1 ${isDark ? "text-white" : "text-slate-800"}`}
+                          >
                             {selectedFileMeta.name}
                           </p>
-                          <p className="text-xs text-slate-500 mt-0.5">
+                          <p
+                            className={`text-xs mt-0.5 ${isDark ? "text-slate-500" : "text-slate-500"}`}
+                          >
                             {formatFileSize(selectedFileMeta.size)}
                           </p>
                         </div>
                         <button
                           onClick={() => fileInputRef.current?.click()}
                           disabled={isAnalyzing}
-                          className="px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+                          className={`px-4 py-2 border rounded-xl text-sm font-bold disabled:opacity-50 ${isDark ? "bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700" : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"}`}
                         >
                           {t.replace}
                         </button>
@@ -446,7 +502,9 @@ export default function Recognition() {
                   className="hidden"
                 />
 
-                <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div
+                  className={`mt-8 pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-4 ${isDark ? "border-slate-800" : "border-slate-100"}`}
+                >
                   <div className="flex items-center gap-2 text-sm font-semibold text-slate-500">
                     <ShieldCheck className="w-4 h-4 text-slate-400" />
                     {t.cost}
@@ -465,10 +523,14 @@ export default function Recognition() {
                     <button
                       onClick={handleAnalyze}
                       disabled={!canAnalyze}
-                      className={`w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${
+                      className={`w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold transition-all flex items-center justify-center gap-2 shadow-sm ${
                         !canAnalyze
-                          ? "bg-slate-100 text-slate-400 cursor-not-allowed"
-                          : "bg-slate-900 hover:bg-slate-800 text-white shadow-md active:scale-[0.98]"
+                          ? isDark
+                            ? "bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700"
+                            : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                          : isDark
+                            ? "bg-teal-600 hover:bg-teal-500 text-white shadow-teal-900/20 active:scale-[0.98]"
+                            : "bg-slate-900 hover:bg-slate-800 text-white active:scale-[0.98]"
                       }`}
                     >
                       {isAnalyzing ? (
@@ -497,33 +559,49 @@ export default function Recognition() {
           </div>
 
           <div className="xl:col-span-5 space-y-6">
-            <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-200">
-              <h3 className="text-lg font-black text-slate-900 mb-6">
+            <div
+              className={`p-6 rounded-[2rem] shadow-sm border ${isDark ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200"}`}
+            >
+              <h3
+                className={`text-lg font-black mb-6 ${isDark ? "text-white" : "text-slate-900"}`}
+              >
                 {t.flowTitle}
               </h3>
 
               <div className="flex flex-col items-center">
                 <div
-                  className={`w-full max-w-[230px] p-3 rounded-xl border flex items-center gap-3 transition-colors z-10 bg-white ${
+                  className={`w-full max-w-[230px] p-3 rounded-xl border flex items-center gap-3 transition-colors z-10 ${
                     isAnalyzing
-                      ? "border-teal-500 shadow-[0_0_10px_rgba(20,184,166,0.2)]"
-                      : "border-slate-200 shadow-sm"
+                      ? isDark
+                        ? "border-teal-500/50 bg-slate-800 shadow-[0_0_15px_rgba(20,184,166,0.15)]"
+                        : "border-teal-500 bg-white shadow-[0_0_10px_rgba(20,184,166,0.2)]"
+                      : isDark
+                        ? "border-slate-700 bg-slate-800/50 shadow-sm"
+                        : "border-slate-200 bg-white shadow-sm"
                   }`}
                 >
                   <div
                     className={`p-2 rounded-lg ${
                       isAnalyzing
-                        ? "bg-teal-50 text-teal-600"
-                        : "bg-slate-100 text-slate-500"
+                        ? isDark
+                          ? "bg-teal-900/40 text-teal-400"
+                          : "bg-teal-50 text-teal-600"
+                        : isDark
+                          ? "bg-slate-900 text-slate-400"
+                          : "bg-slate-100 text-slate-500"
                     }`}
                   >
                     <FileImage size={16} />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-slate-900 leading-tight">
+                    <p
+                      className={`text-xs font-bold leading-tight ${isDark ? "text-slate-200" : "text-slate-900"}`}
+                    >
                       {t.stepInput}
                     </p>
-                    <p className="text-[10px] text-slate-500 mt-0.5">
+                    <p
+                      className={`text-[10px] mt-0.5 ${isDark ? "text-slate-500" : "text-slate-500"}`}
+                    >
                       {t.stepInputDesc}
                     </p>
                   </div>
@@ -531,22 +609,34 @@ export default function Recognition() {
 
                 <div
                   className={`w-px h-6 ${
-                    isAnalyzing ? "bg-teal-400" : "bg-slate-200"
+                    isAnalyzing
+                      ? "bg-teal-500/50"
+                      : isDark
+                        ? "bg-slate-700"
+                        : "bg-slate-200"
                   }`}
                 />
 
                 <div
                   className={`w-full border-2 border-dashed rounded-2xl p-4 relative transition-colors ${
                     isAnalyzing
-                      ? "border-teal-300 bg-teal-50/30"
-                      : "border-slate-200 bg-slate-50/50"
+                      ? isDark
+                        ? "border-teal-500/30 bg-teal-900/10"
+                        : "border-teal-300 bg-teal-50/30"
+                      : isDark
+                        ? "border-slate-700 bg-slate-900/50"
+                        : "border-slate-200 bg-slate-50/50"
                   }`}
                 >
                   <span
-                    className={`absolute -top-2.5 left-1/2 -translate-x-1/2 px-3 bg-white text-[10px] font-bold uppercase tracking-wider rounded-full border whitespace-nowrap ${
+                    className={`absolute -top-2.5 left-1/2 -translate-x-1/2 px-3 text-[10px] font-bold uppercase tracking-wider rounded-full border whitespace-nowrap ${
                       isAnalyzing
-                        ? "text-teal-600 border-teal-200"
-                        : "text-slate-400 border-slate-200"
+                        ? isDark
+                          ? "bg-slate-900 text-teal-400 border-teal-500/50"
+                          : "bg-white text-teal-600 border-teal-200"
+                        : isDark
+                          ? "bg-slate-900 text-slate-400 border-slate-700"
+                          : "bg-white text-slate-400 border-slate-200"
                     }`}
                   >
                     {t.parallelLabel}
@@ -554,6 +644,7 @@ export default function Recognition() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2">
                     <AgentFlowNode
+                      isDark={isDark}
                       active={isAnalyzing}
                       color="blue"
                       icon={<Cpu size={18} />}
@@ -561,6 +652,7 @@ export default function Recognition() {
                       desc={t.agent1Desc}
                     />
                     <AgentFlowNode
+                      isDark={isDark}
                       active={isAnalyzing}
                       color="violet"
                       icon={<BotMessageSquare size={18} />}
@@ -568,6 +660,7 @@ export default function Recognition() {
                       desc={t.agent2Desc}
                     />
                     <AgentFlowNode
+                      isDark={isDark}
                       active={isAnalyzing}
                       color="amber"
                       icon={<SearchCheck size={18} />}
@@ -579,31 +672,47 @@ export default function Recognition() {
 
                 <div
                   className={`w-px h-6 ${
-                    isAnalyzing ? "bg-teal-400" : "bg-slate-200"
+                    isAnalyzing
+                      ? "bg-teal-500/50"
+                      : isDark
+                        ? "bg-slate-700"
+                        : "bg-slate-200"
                   }`}
                 />
 
                 <div
-                  className={`w-full max-w-[240px] p-3 rounded-xl border flex items-center gap-3 transition-colors z-10 bg-white ${
+                  className={`w-full max-w-[240px] p-3 rounded-xl border flex items-center gap-3 transition-colors z-10 ${
                     isAnalyzing
-                      ? "border-teal-500 shadow-sm"
-                      : "border-slate-200 shadow-sm"
+                      ? isDark
+                        ? "border-teal-500/50 bg-slate-800 shadow-sm"
+                        : "border-teal-500 bg-white shadow-sm"
+                      : isDark
+                        ? "border-slate-700 bg-slate-800/50 shadow-sm"
+                        : "border-slate-200 bg-white shadow-sm"
                   }`}
                 >
                   <div
                     className={`p-2 rounded-lg ${
                       isAnalyzing
-                        ? "bg-teal-50 text-teal-600"
-                        : "bg-slate-100 text-slate-500"
+                        ? isDark
+                          ? "bg-teal-900/40 text-teal-400"
+                          : "bg-teal-50 text-teal-600"
+                        : isDark
+                          ? "bg-slate-900 text-slate-400"
+                          : "bg-slate-100 text-slate-500"
                     }`}
                   >
                     <GitMerge size={16} />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-slate-900 leading-tight">
+                    <p
+                      className={`text-xs font-bold leading-tight ${isDark ? "text-slate-200" : "text-slate-900"}`}
+                    >
                       {t.stepAgg}
                     </p>
-                    <p className="text-[10px] text-slate-500 mt-0.5">
+                    <p
+                      className={`text-[10px] mt-0.5 ${isDark ? "text-slate-500" : "text-slate-500"}`}
+                    >
                       {t.stepAggDesc}
                     </p>
                   </div>
@@ -611,12 +720,20 @@ export default function Recognition() {
 
                 <div
                   className={`w-px h-6 ${
-                    isAnalyzing ? "bg-teal-400" : "bg-slate-200"
+                    isAnalyzing
+                      ? "bg-teal-500/50"
+                      : isDark
+                        ? "bg-slate-700"
+                        : "bg-slate-200"
                   }`}
                 />
 
-                <div className="w-full max-w-[230px] p-3 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3 bg-slate-900">
-                  <div className="p-2 rounded-lg bg-slate-800 text-teal-400">
+                <div
+                  className={`w-full max-w-[230px] p-3 rounded-xl border shadow-sm flex items-center gap-3 ${isDark ? "bg-slate-950 border-slate-700" : "bg-slate-900 border-slate-800"}`}
+                >
+                  <div
+                    className={`p-2 rounded-lg ${isDark ? "bg-slate-800 text-teal-400" : "bg-slate-800 text-teal-400"}`}
+                  >
                     <FileJson size={16} />
                   </div>
                   <div>
@@ -631,25 +748,48 @@ export default function Recognition() {
               </div>
             </div>
 
-            <div className="bg-slate-100 p-6 rounded-[1.5rem] border border-slate-200 text-sm">
-              <div className="flex items-center gap-2 font-bold text-slate-800 mb-2">
-                <AlertCircle size={16} className="text-slate-500" />
+            <div
+              className={`p-6 rounded-[1.5rem] border text-sm ${isDark ? "bg-slate-800/50 border-slate-700" : "bg-slate-100 border-slate-200"}`}
+            >
+              <div
+                className={`flex items-center gap-2 font-bold mb-2 ${isDark ? "text-slate-300" : "text-slate-800"}`}
+              >
+                <AlertCircle
+                  size={16}
+                  className={isDark ? "text-slate-500" : "text-slate-500"}
+                />
                 {t.workflowTitle}
               </div>
-              <p className="text-slate-600 leading-relaxed">{t.workflowDesc}</p>
+              <p
+                className={`leading-relaxed ${isDark ? "text-slate-400" : "text-slate-600"}`}
+              >
+                {t.workflowDesc}
+              </p>
 
               <div className="grid grid-cols-2 gap-3 mt-5">
-                <MiniInfo label="Region" value={t.supportedRegion} />
-                <MiniInfo label="Output" value={t.outputType} />
+                <MiniInfo
+                  isDark={isDark}
+                  label="Region"
+                  value={t.supportedRegion}
+                />
+                <MiniInfo isDark={isDark} label="Output" value={t.outputType} />
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-[1.5rem] shadow-sm border border-slate-200">
+            <div
+              className={`p-6 rounded-[1.5rem] shadow-sm border ${isDark ? "bg-slate-900 border-slate-800" : "bg-white border-slate-200"}`}
+            >
               <div className="flex items-center gap-2 mb-4">
                 <Lightbulb className="w-5 h-5 text-amber-500" />
-                <h4 className="font-bold text-slate-900">{t.tipsTitle}</h4>
+                <h4
+                  className={`font-bold ${isDark ? "text-white" : "text-slate-900"}`}
+                >
+                  {t.tipsTitle}
+                </h4>
               </div>
-              <ul className="space-y-3 text-sm text-slate-600">
+              <ul
+                className={`space-y-3 text-sm ${isDark ? "text-slate-400" : "text-slate-600"}`}
+              >
                 {[t.tip1, t.tip2, t.tip3, t.tip4].map((tip, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <span className="mt-1 w-1.5 h-1.5 rounded-full bg-teal-500 shrink-0" />
@@ -678,39 +818,64 @@ export default function Recognition() {
   );
 }
 
-function AgentFlowNode({ active, color, icon, title, desc }) {
-  const colorClasses = {
-    blue: active
-      ? "border-blue-300 shadow-sm shadow-blue-100 text-blue-500"
-      : "border-slate-200 text-slate-400",
-    violet: active
-      ? "border-violet-300 shadow-sm shadow-violet-100 text-violet-500"
-      : "border-slate-200 text-slate-400",
-    amber: active
-      ? "border-amber-300 shadow-sm shadow-amber-100 text-amber-500"
-      : "border-slate-200 text-slate-400",
-  };
+// ==========================================
+// THÊM SUB-COMPONENTS BỊ THIẾU
+// ==========================================
+
+function AgentFlowNode({ isDark, active, color, icon, title, desc }) {
+  // Tạo base style cho tuỳ chỉnh màu sắc động thay vì fixed color class
+  // Để tránh lỗi thiếu class trong Tailwind compilation
+  const baseBg = isDark ? "bg-slate-800" : "bg-slate-50";
+  const baseBorder = isDark ? "border-slate-700" : "border-slate-200";
+  const activeBorder = "border-teal-400/50";
+  const activeBg = isDark ? "bg-teal-900/10" : "bg-teal-50";
 
   return (
     <div
-      className={`p-3 rounded-xl border flex flex-col items-center text-center transition-all bg-white ${colorClasses[color]}`}
+      className={`p-3 rounded-xl border flex flex-col items-center text-center transition-colors ${
+        active ? `${activeBorder} ${activeBg}` : `${baseBorder} ${baseBg}`
+      }`}
     >
-      <div className={active ? "animate-pulse mb-2" : "mb-2"}>{icon}</div>
-      <p className="text-[11px] font-bold text-slate-900 leading-tight">
+      <div
+        className={`mb-2 p-1.5 rounded-lg ${
+          active
+            ? isDark
+              ? "bg-teal-900/30 text-teal-400"
+              : "bg-teal-100 text-teal-600"
+            : isDark
+              ? "bg-slate-700 text-slate-400"
+              : "bg-slate-200 text-slate-500"
+        }`}
+      >
+        {icon}
+      </div>
+      <p
+        className={`text-xs font-bold mb-1 ${isDark ? "text-slate-300" : "text-slate-800"}`}
+      >
         {title}
       </p>
-      <p className="text-[9px] text-slate-500 mt-1 leading-tight">{desc}</p>
+      <p
+        className={`text-[9px] leading-relaxed ${isDark ? "text-slate-500" : "text-slate-500"}`}
+      >
+        {desc}
+      </p>
     </div>
   );
 }
 
-function MiniInfo({ label, value }) {
+function MiniInfo({ isDark, label, value }) {
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-3">
-      <p className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">
-        {label}
+    <div
+      className={`p-3 rounded-xl border ${
+        isDark ? "bg-slate-900 border-slate-700" : "bg-white border-slate-200"
+      }`}
+    >
+      <p className="text-xs text-slate-500 font-medium mb-0.5">{label}</p>
+      <p
+        className={`text-sm font-bold ${isDark ? "text-slate-200" : "text-slate-800"}`}
+      >
+        {value}
       </p>
-      <p className="text-sm font-bold text-slate-800 mt-1">{value}</p>
     </div>
   );
 }

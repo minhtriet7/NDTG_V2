@@ -39,23 +39,21 @@ except Exception:
 
 # ============================================================
 # Config đường dẫn model
-# Sau này bạn chỉnh 3 biến môi trường này trong .env hoặc settings.
-# Nếu không có env, code dùng default path bên dưới.
 # ============================================================
 
 YOLO_MODEL_PATH = os.getenv(
     "AGENT1_YOLO_MODEL_PATH",
-    "models/yolo/best.pt"
+    "ml_models/yolo/best.pt" 
 )
 
 RES_MODEL_PATH = os.getenv(
     "AGENT1_RES_MODEL_PATH",
-    "models/res/banknote_efficientnet_b0_best.pth"
+    "ml_models/res/banknote_resnet50_stable_best.pth" 
 )
 
 RES_CLASSES_PATH = os.getenv(
     "AGENT1_RES_CLASSES_PATH",
-    "models/res/classes.txt"
+    "ml_models/res/classes.txt"  
 )
 
 YOLO_CONF_THRES = float(os.getenv("AGENT1_YOLO_CONF", "0.25"))

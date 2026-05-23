@@ -7,7 +7,7 @@ from app.models.user_model import User
 from app.models.banknote_model import Banknote
 from app.models.currency_model import CurrencyConversion, ExchangeRate
 from app.models.recognition_model import RecognitionRequest
-from app.models.system_log_model import Feedback, SystemLog
+from app.models.feedback_model import Feedback, SystemLog
 from app.models.token_package_model import TokenPackage
 from app.models.transaction_model import Transaction
 
@@ -15,13 +15,14 @@ from app.models.transaction_model import Transaction
 client = None
 db = None
 
+
 async def init_db():
     global client, db
     try:
         # Khởi tạo Motor Client kết nối đến MongoDB
         client = AsyncIOMotorClient(settings.MONGODB_URL)
         db = client[settings.DATABASE_NAME]
-        
+
         # Khởi tạo Beanie và đăng ký các Model
         await init_beanie(
             database=db,
@@ -34,13 +35,15 @@ async def init_db():
                 Transaction,
                 RecognitionRequest,
                 Feedback,
-                SystemLog
-            ]
+                SystemLog,
+            ],
         )
+
         print("✅ Đã kết nối thành công tới MongoDB!")
     except Exception as e:
         print(f"❌ Lỗi kết nối MongoDB: {e}")
         raise e
+
 
 # Hàm Dependency Injection dùng cho các Router (FastAPI Depends)
 async def get_db():

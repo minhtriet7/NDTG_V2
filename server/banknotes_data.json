@@ -1,0 +1,513 @@
+[
+  {
+    "country": "Việt Nam",
+    "denomination": "500000",
+    "currency_code": "VND",
+    "origin": "Ngân hàng Nhà nước Việt Nam",
+    "description": "Tờ tiền có mệnh giá cao nhất tại Việt Nam, mặt trước in hình Chủ tịch Hồ Chí Minh, mặt sau in hình ngôi nhà sinh trưởng của Người tại Làng Sen.",
+    "material": "Polymer",
+    "series_year": "2003",
+    "features": ["Yếu tố hình ẩn (DOE)", "Mực in đổi màu (OVI)", "Cửa sổ trong suốt có hình dập nổi"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370686/500000_polymer_jvzlsv.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370686/500000_polymer_jvzlsv.jpg"
+  },
+  {
+    "country": "Việt Nam",
+    "denomination": "200000",
+    "currency_code": "VND",
+    "origin": "Ngân hàng Nhà nước Việt Nam",
+    "description": "Tờ tiền polymer màu đỏ nâu đặc trưng, mặt sau in hình danh lam thắng cảnh Vịnh Hạ Long - kỳ quan thiên nhiên thế giới.",
+    "material": "Polymer",
+    "series_year": "2006",
+    "features": ["Cửa sổ trong suốt nhỏ", "Hình bóng chìm Chùa Một Cột", "Dải số mệnh giá in bằng mực phát quang"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370685/200000_izzcoc.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370685/200000_izzcoc.jpg"
+  },
+
+
+
+  {
+    "country": "Việt Nam",
+    "denomination": "100000",
+    "currency_code": "VND",
+    "origin": "Ngân hàng Nhà nước Việt Nam",
+    "description": "Tờ tiền polymer màu xanh lá cây đậm, mặt trước in hình Chủ tịch Hồ Chí Minh, mặt sau in hình Văn Miếu - Quốc Tử Giám tại Hà Nội.",
+    "material": "Polymer",
+    "series_year": "2004",
+    "features": ["Cửa sổ trong suốt", "Hình ẩn hoặc hình dập nổi trong cửa sổ", "Hoa văn bảo an hiện đại"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370686/images_uwpypr.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370686/images_uwpypr.jpg"
+  },
+  {
+    "country": "Việt Nam",
+    "denomination": "50000",
+    "currency_code": "VND",
+    "origin": "Ngân hàng Nhà nước Việt Nam",
+    "description": "Tờ tiền polymer màu nâu tím đỏ, mặt trước in hình Chủ tịch Hồ Chí Minh, mặt sau in phong cảnh Huế.",
+    "material": "Polymer",
+    "series_year": "2003",
+    "features": ["Cửa sổ trong suốt", "Yếu tố bảo an polymer", "Hoa văn dân tộc và hoa văn lưới hiện đại"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370685/images_2_uzmngy.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370685/images_2_uzmngy.jpg"
+  },
+  {
+    "country": "Việt Nam",
+    "denomination": "20000",
+    "currency_code": "VND",
+    "origin": "Ngân hàng Nhà nước Việt Nam",
+    "description": "Tờ tiền polymer màu xanh lơ đậm, mặt trước in hình Chủ tịch Hồ Chí Minh, mặt sau in phong cảnh Chùa Cầu, Hội An, Quảng Nam.",
+    "material": "Polymer",
+    "series_year": "2006",
+    "features": ["Cửa sổ trong suốt", "Yếu tố bảo an polymer", "Hoa văn dân tộc và hoa văn lưới hiện đại"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370686/images_1_phxwy3.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370686/images_1_phxwy3.jpg"
+  },
+  {
+    "country": "Việt Nam",
+    "denomination": "10000",
+    "currency_code": "VND",
+    "origin": "Ngân hàng Nhà nước Việt Nam",
+    "description": "Tờ tiền polymer màu nâu đậm trên nền vàng xanh, mặt trước in hình Chủ tịch Hồ Chí Minh, mặt sau in cảnh khai thác dầu khí.",
+    "material": "Polymer",
+    "series_year": "2006",
+    "features": ["Cửa sổ trong suốt", "Yếu tố bảo an polymer", "Hoa văn dân tộc và hoa văn lưới hiện đại"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370686/images_3_x5pdev.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370686/images_3_x5pdev.jpg"
+  },
+  {
+    "country": "Việt Nam",
+    "denomination": "5000",
+    "currency_code": "VND",
+    "origin": "Ngân hàng Nhà nước Việt Nam",
+    "description": "Tờ tiền cotton màu xanh lơ sẫm, mặt trước in hình Chủ tịch Hồ Chí Minh, mặt sau in phong cảnh thủy điện Trị An.",
+    "material": "Cotton",
+    "series_year": "1993",
+    "features": ["Giấy cotton", "Hoa văn dân tộc", "Hoa văn lưới hiện đại"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370686/images_4_ebkynz.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370686/images_4_ebkynz.jpg"
+  },
+  {
+    "country": "Việt Nam",
+    "denomination": "2000",
+    "currency_code": "VND",
+    "origin": "Ngân hàng Nhà nước Việt Nam",
+    "description": "Tờ tiền cotton màu nâu sẫm, mặt trước in hình Chủ tịch Hồ Chí Minh, mặt sau in hình xưởng dệt.",
+    "material": "Cotton",
+    "series_year": "1989",
+    "features": ["Giấy cotton", "Hoa văn dân tộc", "Hoa văn lưới hiện đại"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370686/20110129090439_Violet_oldgdx.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370686/20110129090439_Violet_oldgdx.jpg"
+  },
+  {
+    "country": "Việt Nam",
+    "denomination": "1000",
+    "currency_code": "VND",
+    "origin": "Ngân hàng Nhà nước Việt Nam",
+    "description": "Tờ tiền cotton màu tím, mặt trước in hình Chủ tịch Hồ Chí Minh, mặt sau in cảnh khai thác gỗ.",
+    "material": "Cotton",
+    "series_year": "1989",
+    "features": ["Giấy cotton", "Hoa văn dân tộc", "Hoa văn lưới hiện đại"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370686/images_5_zomzaw.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370686/images_5_zomzaw.jpg"
+  },
+  {
+    "country": "Việt Nam",
+    "denomination": "500",
+    "currency_code": "VND",
+    "origin": "Ngân hàng Nhà nước Việt Nam",
+    "description": "Tờ tiền cotton màu đỏ cánh sen, mặt trước in hình Chủ tịch Hồ Chí Minh, mặt sau in phong cảnh cảng Hải Phòng.",
+    "material": "Cotton",
+    "series_year": "1989",
+    "features": ["Giấy cotton", "Hoa văn dân tộc", "Hoa văn lưới hiện đại"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370686/500-dong-banknote-ho-chi-minh-and-dockside-vietnam-1988-D40FNG_emwe6q.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370686/500-dong-banknote-ho-chi-minh-and-dockside-vietnam-1988-D40FNG_emwe6q.jpg"
+  },
+  
+
+  {
+    "country": "Thái Lan",
+    "denomination": "1000",
+    "currency_code": "THB",
+    "origin": "Ngân hàng Thái Lan (Bank of Thailand)",
+    "description": "Mệnh giá lớn nhất của đồng Baht Thái Lan thuộc Sê-ri 17, mặt trước in chân dung Quốc vương Maha Vajiralongkorn (Rama X) trong trang phục lộng lẫy.",
+    "material": "Giấy",
+    "series_year": "2018",
+    "features": ["Hình chìm chân dung nhà vua", "Định dạng hình ảnh 3D chuyển động góc nhìn", "Chữ nổi dành cho người khiếm thị"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370946/download_yk0la6.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370946/download_yk0la6.jpg"
+  },
+  {
+    "country": "Thái Lan",
+    "denomination": "500",
+    "currency_code": "THB",
+    "origin": "Ngân hàng Thái Lan (Bank of Thailand)",
+    "description": "Tờ 500 Baht mang tông màu tím chủ đạo, mặt trước in hình Vua Rama X, mặt sau khắc họa hình ảnh đóng góp lịch sử của các triều đại trước.",
+    "material": "Giấy",
+    "series_year": "2018",
+    "features": ["Dây bảo hiểm đổi màu theo góc nhìn", "Ký hiệu xúc giác hình học nổi", "Mã số seri phát quang dưới tia UV"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370946/images_duytmq.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370946/images_duytmq.jpg"
+  },
+  
+  {
+    "country": "Thái Lan",
+    "denomination": "100",
+    "currency_code": "THB",
+    "origin": "Ngân hàng Thái Lan (Bank of Thailand)",
+    "description": "Tờ 100 Baht thuộc Sê-ri 17, mặt trước in chân dung Quốc vương Maha Vajiralongkorn (Rama X), mặt sau khắc họa Quốc vương Chulalongkorn (Rama V) và Quốc vương Vajiravudh (Rama VI), gắn với các đóng góp quan trọng trong lịch sử Thái Lan.",
+    "material": "Giấy / Polymer",
+    "series_year": "2018",
+    "features": ["Hình chìm chân dung nhà vua", "Dây bảo hiểm chống giả", "Ký hiệu xúc giác dành cho người khiếm thị", "Mực và chi tiết phát quang dưới tia UV"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370946/images_1_jkfdj6.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370946/images_1_jkfdj6.jpg"
+  },
+  {
+    "country": "Thái Lan",
+    "denomination": "50",
+    "currency_code": "THB",
+    "origin": "Ngân hàng Thái Lan (Bank of Thailand)",
+    "description": "Tờ 50 Baht thuộc Sê-ri 17, có tông màu xanh lam chủ đạo, mặt trước in chân dung Quốc vương Maha Vajiralongkorn (Rama X), mặt sau thể hiện hình ảnh Quốc vương Nangklao (Rama III) và Quốc vương Mongkut (Rama IV) cùng các dấu ấn lịch sử của từng triều đại.",
+    "material": "Giấy / Polymer",
+    "series_year": "2018",
+    "features": ["Hình chìm chân dung nhà vua", "Dây bảo hiểm đổi màu theo góc nhìn", "Ký hiệu xúc giác nổi", "Chi tiết phát quang dưới tia UV"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370946/images_2_hcy53m.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370946/images_2_hcy53m.jpg"
+  },
+  {
+    "country": "Thái Lan",
+    "denomination": "20",
+    "currency_code": "THB",
+    "origin": "Ngân hàng Thái Lan (Bank of Thailand)",
+    "description": "Tờ 20 Baht thuộc Sê-ri 17, là mệnh giá thấp nhất trong nhóm tiền giấy Baht đang lưu hành. Mặt trước in chân dung Quốc vương Maha Vajiralongkorn (Rama X) trong quân phục Không quân Hoàng gia Thái Lan, mặt sau in hình Quốc vương Phra Buddha Yodfa Chulalok (Rama I) và Quốc vương Phra Buddha Lertla Naphalai (Rama II).",
+    "material": "Polymer",
+    "series_year": "2022",
+    "features": ["Cửa sổ trong suốt", "Cửa sổ đổi màu từ vàng trong sang đỏ", "Hình chìm chân dung nhà vua", "Ký hiệu xúc giác dành cho người khiếm thị"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370946/images_3_blq0gp.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779370946/images_3_blq0gp.jpg"
+  },
+
+
+
+  {
+    "country": "Singapore",
+    "denomination": "10000",
+    "currency_code": "SGD",
+    "origin": "Cục Quản lý Tiền tệ Singapore (MAS)",
+    "description": "Tờ tiền mệnh giá rất cao thuộc Portrait Series, mặt trước in chân dung Tổng thống đầu tiên Yusof bin Ishak, mặt sau mang chủ đề Kinh tế, thể hiện Singapore như một nền kinh tế tri thức với các hình ảnh liên quan đến công nghệ sinh học, nghiên cứu và phát triển, cùng công nghiệp bán dẫn.",
+    "material": "Giấy",
+    "series_year": "1999",
+    "features": ["Hình chìm chân dung Yusof bin Ishak", "Kinegram chống giả", "Chữ in siêu nhỏ microtext", "Chi tiết phát quang dưới tia UV"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371041/images_4_c2rs1x.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371041/images_4_c2rs1x.jpg"
+  },
+  {
+    "country": "Singapore",
+    "denomination": "1000",
+    "currency_code": "SGD",
+    "origin": "Cục Quản lý Tiền tệ Singapore (MAS)",
+    "description": "Tờ 1000 Đô-la Singapore thuộc Portrait Series màu hồng, mặt trước in chân dung Yusof bin Ishak, mặt sau mang chủ đề Chính phủ với hình ảnh Parliament House, Old Supreme Court Building và Istana, đại diện cho ba nhánh quyền lực lập pháp, tư pháp và hành pháp.",
+    "material": "Giấy",
+    "series_year": "1999",
+    "features": ["Hình chìm chân dung Yusof bin Ishak", "Kinegram chống giả", "Toàn bộ lời quốc ca Singapore in siêu nhỏ", "Chi tiết phát quang dưới tia UV"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371042/images_yoqjjx.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371042/images_yoqjjx.jpg"
+  },
+  {
+    "country": "Singapore",
+    "denomination": "100",
+    "currency_code": "SGD",
+    "origin": "Cục Quản lý Tiền tệ Singapore (MAS)",
+    "description": "Tờ 100 Đô-la Singapore thuộc Portrait Series màu cam, mặt trước in chân dung Yusof bin Ishak, mặt sau mang chủ đề Tuổi trẻ, thể hiện hình ảnh sĩ quan National Service tại SAFTI Military Institute và các tổ chức thanh thiếu niên.",
+    "material": "Giấy",
+    "series_year": "1999",
+    "features": ["Hình chìm chân dung Yusof bin Ishak", "Kinegram chống giả", "Ký hiệu in đối chiếu đối xứng", "Chữ in siêu nhỏ microtext"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371040/images_1_y94jcn.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371040/images_1_y94jcn.jpg"
+  },
+  {
+    "country": "Singapore",
+    "denomination": "50",
+    "currency_code": "SGD",
+    "origin": "Cục Quản lý Tiền tệ Singapore (MAS)",
+    "description": "Tờ tiền thuộc sê-ri chân dung màu xanh lam cố định, mặt trước in hình vị Tổng thống đầu tiên Yusof bin Ishak, mặt sau đại diện cho lĩnh vực Nghệ thuật tại quốc gia.",
+    "material": "Giấy",
+    "series_year": "1999",
+    "features": ["Ký hiệu in đối chiếu đối xứng", "Hình chìm sư tử đa sắc", "Chữ in siêu nhỏ microtext"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371040/images_2_yddzki.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371040/images_2_yddzki.jpg"
+  },
+  {
+    "country": "Singapore",
+    "denomination": "10",
+    "currency_code": "SGD",
+    "origin": "Cục Quản lý Tiền tệ Singapore (MAS)",
+    "description": "Tờ 10 Đô-la Singapore phiên bản Polymer màu đỏ, mặt sau khắc họa biểu tượng chủ đề Thể thao và Giáo dục thể chất.",
+    "material": "Polymer",
+    "series_year": "2004",
+    "features": ["Cửa sổ trong suốt hình đa giác", "Biểu tượng Sư tử biển dập ánh kim vàng", "Độ bám mực cao chống giả"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371040/images_3_x8ekfq.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371040/images_3_x8ekfq.jpg"
+  },
+  {
+    "country": "Singapore",
+    "denomination": "5",
+    "currency_code": "SGD",
+    "origin": "Cục Quản lý Tiền tệ Singapore (MAS)",
+    "description": "Tờ 5 Đô-la Singapore thuộc Portrait Series màu xanh lá, mặt trước in chân dung Yusof bin Ishak, mặt sau mang chủ đề Thành phố Vườn với hình ảnh cây tembusu cổ thụ tại Singapore Botanic Gardens và quốc hoa Vanda Miss Joaquim.",
+    "material": "Polymer",
+    "series_year": "2007",
+    "features": ["Cửa sổ trong suốt", "Hình chìm chân dung Yusof bin Ishak", "Kinegram chống giả", "Chi tiết phát quang dưới tia UV"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371040/5_y6ggh3.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371040/5_y6ggh3.jpg"
+  },
+  {
+    "country": "Singapore",
+    "denomination": "2",
+    "currency_code": "SGD",
+    "origin": "Cục Quản lý Tiền tệ Singapore (MAS)",
+    "description": "Tờ 2 Đô-la Singapore thuộc Portrait Series màu tím, mặt trước in chân dung Yusof bin Ishak, mặt sau mang chủ đề Giáo dục với hình ảnh Victoria Bridge School, Old Raffles Institution và College of Medicine Building.",
+    "material": "Polymer",
+    "series_year": "2006",
+    "features": ["Cửa sổ trong suốt", "Hình chìm chân dung Yusof bin Ishak", "Kinegram chống giả", "Chi tiết phát quang dưới tia UV"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371041/images_5_puk2nw.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371041/images_5_puk2nw.jpg"
+  },
+
+
+
+  {
+    "country": "Malaysia",
+    "denomination": "100",
+    "currency_code": "MYR",
+    "origin": "Ngân hàng Trung ương Malaysia (Bank Negara Malaysia)",
+    "description": "Đồng Ringgit thuộc Sê-ri thứ 4, mặt trước in chân dung Tuanku Abdul Rahman, Yang di-Pertuan Agong đầu tiên của Malaysia, mặt sau thể hiện hai kỳ quan thiên nhiên là núi Kinabalu ở Sabah và khối đá vôi Gunung Api tại Sarawak.",
+    "material": "Giấy",
+    "series_year": "2012",
+    "features": ["Hình chìm chân dung Tuanku Abdul Rahman", "Dây bảo hiểm", "Ký hiệu xúc giác cho người khiếm thị", "Chi tiết phát quang dưới tia UV"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371143/images_6_xhu8tf.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371143/images_6_xhu8tf.jpg"
+  },
+  {
+    "country": "Malaysia",
+    "denomination": "50",
+    "currency_code": "MYR",
+    "origin": "Ngân hàng Trung ương Malaysia (Bank Negara Malaysia)",
+    "description": "Đồng Ringgit thuộc Sê-ri thứ 4, in hình Thủ tướng đầu tiên Tunku Abdul Rahman, mặt sau thể hiện biểu tượng cây cọ dầu đặc trưng kinh tế quốc gia.",
+    "material": "Giấy",
+    "series_year": "2009",
+    "features": ["Ký hiệu ảnh ba chiều Hologram dải dọc", "Cửa sổ bảo an vi thấu kính", "Hình in chìm hoa dâm bụt quốc hoa"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371144/s-l1200_ta7sbz.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371144/s-l1200_ta7sbz.jpg"
+  },
+  {
+    "country": "Malaysia",
+    "denomination": "20",
+    "currency_code": "MYR",
+    "origin": "Ngân hàng Trung ương Malaysia (Bank Negara Malaysia)",
+    "description": "Đồng Ringgit thuộc Sê-ri thứ 4, mặt trước in chân dung Tuanku Abdul Rahman, mặt sau thể hiện hai loài rùa biển của Malaysia là rùa đồi mồi và rùa da, tượng trưng cho đa dạng sinh học biển.",
+    "material": "Giấy",
+    "series_year": "2012",
+    "features": ["Hình chìm chân dung Tuanku Abdul Rahman", "Dây bảo hiểm", "Ký hiệu xúc giác cho người khiếm thị", "Chi tiết phát quang dưới tia UV"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371144/images_aehjzf.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371144/images_aehjzf.jpg"
+  },
+  {
+    "country": "Malaysia",
+    "denomination": "10",
+    "currency_code": "MYR",
+    "origin": "Ngân hàng Trung ương Malaysia (Bank Negara Malaysia)",
+    "description": "Đồng Ringgit thuộc Sê-ri thứ 4, mặt trước in chân dung Tuanku Abdul Rahman, mặt sau in hoa Rafflesia, một trong những loài hoa lớn và nổi bật nhất thế giới, gắn với hệ sinh thái rừng mưa Malaysia.",
+    "material": "Giấy",
+    "series_year": "2012",
+    "features": ["Hình chìm chân dung Tuanku Abdul Rahman", "Dây bảo hiểm", "Ký hiệu xúc giác cho người khiếm thị", "Chi tiết phát quang dưới tia UV"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371142/images_1_uvxoyf.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371142/images_1_uvxoyf.jpg"
+  },
+  {
+    "country": "Malaysia",
+    "denomination": "5",
+    "currency_code": "MYR",
+    "origin": "Ngân hàng Trung ương Malaysia (Bank Negara Malaysia)",
+    "description": "Đồng Ringgit thuộc Sê-ri thứ 4, mặt trước in chân dung Tuanku Abdul Rahman, mặt sau thể hiện chim hồng hoàng tê giác, loài chim biểu tượng của rừng nhiệt đới Malaysia.",
+    "material": "Polymer",
+    "series_year": "2012",
+    "features": ["Cửa sổ trong suốt", "Hình chìm chân dung Tuanku Abdul Rahman", "Ký hiệu xúc giác cho người khiếm thị", "Chi tiết phát quang dưới tia UV"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371143/images_2_lsjvir.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371143/images_2_lsjvir.jpg"
+  },
+  {
+    "country": "Malaysia",
+    "denomination": "1",
+    "currency_code": "MYR",
+    "origin": "Ngân hàng Trung ương Malaysia (Bank Negara Malaysia)",
+    "description": "Đồng Ringgit thuộc Sê-ri thứ 4, mặt trước in chân dung Tuanku Abdul Rahman, mặt sau in hình Wau Bulan, loại diều truyền thống nổi tiếng của Malaysia.",
+    "material": "Polymer",
+    "series_year": "2012",
+    "features": ["Cửa sổ trong suốt", "Hình chìm chân dung Tuanku Abdul Rahman", "Ký hiệu xúc giác cho người khiếm thị", "Chi tiết phát quang dưới tia UV"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371143/images_3_mhi6n3.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371143/images_3_mhi6n3.jpg"
+  },
+
+
+
+  {
+    "country": "Indonesia",
+    "denomination": "100000",
+    "currency_code": "IDR",
+    "origin": "Ngân hàng Indonesia (Bank Indonesia)",
+    "description": "Mệnh giá lớn nhất của đồng Rupiah, mặt trước in hình hai nhà khai quốc vĩ đại Soekarno và Mohammad Hatta, mặt sau in vũ điệu truyền thống Topeng Betawi.",
+    "material": "Giấy",
+    "series_year": "2022",
+    "features": ["Công nghệ in bảo an đổi màu bộc lộ", "Sợi chỉ bảo hiểm chuyển động động học", "Ký hiệu phát quang ma trận điểm kỹ thuật"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371302/images_4_nencuq.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371302/images_4_nencuq.jpg"
+  },
+  {
+    "country": "Indonesia",
+    "denomination": "50000",
+    "currency_code": "IDR",
+    "origin": "Ngân hàng Indonesia (Bank Indonesia)",
+    "description": "Tờ 50.000 Rupiah TE 2022, mặt trước in hình anh hùng dân tộc Ir. H. Djuanda Kartawidjaja, mặt sau thể hiện vũ điệu Legong, phong cảnh Vườn quốc gia Komodo và hoa Jepun Bali.",
+    "material": "Giấy",
+    "series_year": "2022",
+    "features": ["Hình chìm chân dung anh hùng dân tộc", "Sợi chỉ bảo hiểm", "Mực đổi màu", "Chi tiết phát quang dưới tia UV"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371303/images_hx6kmy.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371303/images_hx6kmy.jpg"
+  },
+  {
+    "country": "Indonesia",
+    "denomination": "20000",
+    "currency_code": "IDR",
+    "origin": "Ngân hàng Indonesia (Bank Indonesia)",
+    "description": "Tờ 20.000 Rupiah TE 2022, mặt trước in hình anh hùng dân tộc Dr. G.S.S.J. Ratulangi, mặt sau thể hiện vũ điệu Gong, cảnh Derawan và hoa phong lan đen.",
+    "material": "Giấy",
+    "series_year": "2022",
+    "features": ["Hình chìm chân dung anh hùng dân tộc", "Sợi chỉ bảo hiểm", "In nổi nhận biết bằng xúc giác", "Chi tiết phát quang dưới tia UV"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371304/Indonesia_B621a_20000_Rupiah_w_fr_lfnx2t.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371304/Indonesia_B621a_20000_Rupiah_w_fr_lfnx2t.jpg"
+  },
+  {
+    "country": "Indonesia",
+    "denomination": "10000",
+    "currency_code": "IDR",
+    "origin": "Ngân hàng Indonesia (Bank Indonesia)",
+    "description": "Tờ 10.000 Rupiah TE 2022, mặt trước in hình anh hùng dân tộc Frans Kaisiepo, mặt sau thể hiện vũ điệu Pakarena, cảnh Wakatobi và hoa Cempaka Hutan Kasar.",
+    "material": "Giấy",
+    "series_year": "2022",
+    "features": ["Hình chìm chân dung anh hùng dân tộc", "Sợi chỉ bảo hiểm", "Mực và số mệnh giá phát quang", "In nổi hỗ trợ người khiếm thị"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371298/images_1_wat9wt.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371298/images_1_wat9wt.jpg"
+  },
+  {
+    "country": "Indonesia",
+    "denomination": "5000",
+    "currency_code": "IDR",
+    "origin": "Ngân hàng Indonesia (Bank Indonesia)",
+    "description": "Tờ 5.000 Rupiah TE 2022, mặt trước in hình anh hùng dân tộc Dr. K.H. Idham Chalid, mặt sau thể hiện vũ điệu Gambyong, cảnh núi Bromo và hoa Sedap Malam.",
+    "material": "Giấy",
+    "series_year": "2022",
+    "features": ["Hình chìm chân dung anh hùng dân tộc", "Sợi chỉ bảo hiểm", "In nổi nhận biết bằng xúc giác", "Chi tiết phát quang dưới tia UV"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371298/images_2_slj4nx.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371298/images_2_slj4nx.jpg"
+  },
+  {
+    "country": "Indonesia",
+    "denomination": "2000",
+    "currency_code": "IDR",
+    "origin": "Ngân hàng Indonesia (Bank Indonesia)",
+    "description": "Tờ 2.000 Rupiah TE 2022, mặt trước in hình anh hùng dân tộc Mohammad Hoesni Thamrin, mặt sau thể hiện vũ điệu Piring, cảnh Ngarai Sianok và hoa Jeumpa.",
+    "material": "Giấy",
+    "series_year": "2022",
+    "features": ["Hình chìm chân dung anh hùng dân tộc", "Sợi chỉ bảo hiểm", "In nổi hỗ trợ người khiếm thị", "Chi tiết phát quang dưới tia UV"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371299/images_3_ibtyed.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371299/images_3_ibtyed.jpg"
+  },
+  {
+    "country": "Indonesia",
+    "denomination": "1000",
+    "currency_code": "IDR",
+    "origin": "Ngân hàng Indonesia (Bank Indonesia)",
+    "description": "Tờ 1.000 Rupiah TE 2022, mặt trước in hình nữ anh hùng dân tộc Tjut Meutia, mặt sau thể hiện vũ điệu Tifa, cảnh Banda Neira và hoa Anggrek Larat.",
+    "material": "Giấy",
+    "series_year": "2022",
+    "features": ["Hình chìm chân dung anh hùng dân tộc", "Sợi chỉ bảo hiểm", "In nổi hỗ trợ người khiếm thị", "Chi tiết phát quang dưới tia UV"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371304/s-l1200_qx22s4.png",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371304/s-l1200_qx22s4.png"
+  },
+
+
+  {
+    "country": "Philippines",
+    "denomination": "1000",
+    "currency_code": "PHP",
+    "origin": "Ngân hàng Trung ương Philippines (Bangko Sentral ng Pilipinas)",
+    "description": "Đồng xu hướng mới của Philippines, mặt trước in hình chim Đại bàng Philippines quý hiếm, mặt sau in hình rạn san hô Tubbataha Reefs Natural Park.",
+    "material": "Polymer",
+    "series_year": "2022",
+    "features": ["Cửa sổ polymer hình hoa nhài", "Hình in dập nổi định vị phản quang", "Mã số sê-ri đổi kích thước tăng tiến"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371412/s-l400_pjhadg.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371412/s-l400_pjhadg.jpg"
+  },
+  {
+    "country": "Philippines",
+    "denomination": "500",
+    "currency_code": "PHP",
+    "origin": "Ngân hàng Trung ương Philippines (Bangko Sentral ng Pilipinas)",
+    "description": "Tờ 500 Peso thuộc dòng polymer mới của Philippines, mặt trước thể hiện hình ảnh loài vẹt mào xanh Visayan spotted deer hoặc sinh vật đặc hữu Philippines tùy thiết kế phát hành, mặt sau gắn với các cảnh quan và hệ sinh thái tiêu biểu của quốc gia.",
+    "material": "Polymer",
+    "series_year": "2025",
+    "features": ["Cửa sổ polymer trong suốt", "Chi tiết in nổi hỗ trợ người khiếm thị", "Mực và hình ảnh bảo an phát quang", "Số sê-ri tăng tiến"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371411/images_auxc7z.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371411/images_auxc7z.jpg"
+  },
+  {
+    "country": "Philippines",
+    "denomination": "200",
+    "currency_code": "PHP",
+    "origin": "Ngân hàng Trung ương Philippines (Bangko Sentral ng Pilipinas)",
+    "description": "Tờ 200 Peso thuộc dòng New Generation Currency, mặt trước in hình Tổng thống Diosdado Macapagal, mặt sau in hình Chocolate Hills tại Bohol và loài khỉ lùn Philippine tarsier.",
+    "material": "Giấy",
+    "series_year": "2010",
+    "features": ["Hình chìm chân dung", "Dây bảo hiểm", "Mực phát quang dưới tia UV", "Ký hiệu xúc giác cho người khiếm thị"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371410/images_1_fa9a1c.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371410/images_1_fa9a1c.jpg"
+  },
+  {
+    "country": "Philippines",
+    "denomination": "100",
+    "currency_code": "PHP",
+    "origin": "Ngân hàng Trung ương Philippines (Bangko Sentral ng Pilipinas)",
+    "description": "Tờ 100 Peso thuộc dòng polymer mới của Philippines, là một trong các mệnh giá mới được bổ sung vào First Philippine Polymer Banknote Series nhằm tăng độ bền, độ sạch và khả năng chống giả.",
+    "material": "Polymer",
+    "series_year": "2025",
+    "features": ["Cửa sổ polymer trong suốt", "Chi tiết in nổi hỗ trợ người khiếm thị", "Mực và hình ảnh bảo an phát quang", "Số sê-ri tăng tiến"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371410/images_2_hngsdq.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371410/images_2_hngsdq.jpg"
+  },
+  {
+    "country": "Philippines",
+    "denomination": "50",
+    "currency_code": "PHP",
+    "origin": "Ngân hàng Trung ương Philippines (Bangko Sentral ng Pilipinas)",
+    "description": "Tờ 50 Peso thuộc dòng polymer mới của Philippines, là mệnh giá polymer mới trong First Philippine Polymer Banknote Series, được thiết kế để lưu thông song song với các tiền giấy hợp pháp hiện có.",
+    "material": "Polymer",
+    "series_year": "2025",
+    "features": ["Cửa sổ polymer trong suốt", "Chi tiết in nổi hỗ trợ người khiếm thị", "Mực và hình ảnh bảo an phát quang", "Số sê-ri tăng tiến"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371409/download_csegcj.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371409/download_csegcj.jpg"
+  },
+  {
+    "country": "Philippines",
+    "denomination": "20",
+    "currency_code": "PHP",
+    "origin": "Ngân hàng Trung ương Philippines (Bangko Sentral ng Pilipinas)",
+    "description": "Tờ 20 Peso thuộc dòng New Generation Currency, mặt trước in hình Tổng thống Manuel L. Quezon, mặt sau in Ruộng bậc thang Banaue Rice Terraces và loài cầy hương châu Á Palm Civet.",
+    "material": "Giấy",
+    "series_year": "2010",
+    "features": ["Hình chìm chân dung", "Dây bảo hiểm", "Mực phát quang dưới tia UV", "Ký hiệu xúc giác cho người khiếm thị"],
+    "front_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371411/images_3_rjwdiy.jpg",
+    "back_image_url": "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779371411/images_3_rjwdiy.jpg"
+  }
+]
+
+

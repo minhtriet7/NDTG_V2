@@ -5,18 +5,19 @@ from app.services.user_service import UserService
 class UserController:
     @staticmethod
     async def get_profile(user: User):
-        # Chuyển đổi object user thành dictionary
         user_dict = user.model_dump() if hasattr(user, "model_dump") else dict(user)
-        
-        # Kiểm tra mật khẩu (nếu không có hoặc là chuỗi rỗng thì trả về False)
-        password = getattr(user, "password", "")
+        password = getattr(user, "hashed_password", "")
         user_dict["has_password"] = bool(password and password.strip() != "")
-        
         return user_dict
         
     @staticmethod
     async def update_profile(user: User, data: UserUpdate):
-        return await UserService.update_profile(user, data)
+        updated_user = await UserService.update_profile(user, data)
+        # Ép kiểu tương tự như get_profile để Frontend nhận đúng chuẩn JSON
+        user_dict = updated_user.model_dump() if hasattr(updated_user, "model_dump") else dict(updated_user)
+        password = getattr(updated_user, "hashed_password", "")
+        user_dict["has_password"] = bool(password and password.strip() != "")
+        return user_dict
         
     @staticmethod
     async def change_password(user: User, data: ChangePasswordRequest):

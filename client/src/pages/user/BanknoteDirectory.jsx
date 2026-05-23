@@ -3,26 +3,69 @@ import {
   Search,
   MapPin,
   Layers,
-  Filter,
   FileText,
-  ChevronRight,
   ScanLine,
+  Image as ImageIcon,
+  Info,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { getBanknotes } from "../../services/currencyService";
 import { useNavigate } from "react-router-dom";
+import { useAppStore } from "../../store/appStore";
 
 export default function BanknoteDirectory() {
   const navigate = useNavigate();
+
+  // 1. LẤY THEME VÀ HÀM TOGGLE TỪ STORE DÙNG CHUNG
+  const { lang, theme, toggleTheme } = useAppStore();
+  const isDarkMode = theme === "dark";
+
   const [banknotes, setBanknotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
+  // --- TỪ ĐIỂN SONG NGỮ ---
+  const t = {
+    EN: {
+      title: "Banknote Directory",
+      subtitle:
+        "Browse supported regional banknotes. Explore detailed metadata and AI compatibility.",
+      searchPlaceholder: "Search by country, currency code (e.g., VND, THB)...",
+      noResults: "No banknotes match your search criteria.",
+      material: "Material",
+      series: "Series",
+      features: "Key Features",
+      btnScan: "Scan Similar Note",
+      noImage: "Image not available",
+    },
+    VI: {
+      title: "Từ Điển Tiền Giấy",
+      subtitle:
+        "Tra cứu các loại tiền tệ được hệ thống AI hỗ trợ. Xem chi tiết thông số và hình ảnh gốc.",
+      searchPlaceholder: "Tìm theo quốc gia, mã tiền tệ (VD: VND, THB)...",
+      noResults: "Không tìm thấy tờ tiền nào phù hợp với từ khóa.",
+      material: "Chất liệu",
+      series: "Năm phát hành",
+      features: "Đặc điểm nhận dạng",
+      btnScan: "Quét tờ tiền tương tự",
+      noImage: "Chưa có hình ảnh gốc",
+    },
+  };
+
+  const text = t[lang || "EN"];
+
   useEffect(() => {
     const fetchBanknotes = async () => {
       setLoading(true);
-      const data = await getBanknotes({ region: "southeast_asia" });
-      setBanknotes(data || []);
-      setLoading(false);
+      try {
+        const data = await getBanknotes({ region: "southeast_asia" });
+        setBanknotes(data || []);
+      } catch (error) {
+        console.error("Lỗi khi tải danh mục tiền:", error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchBanknotes();
   }, []);
@@ -30,98 +73,170 @@ export default function BanknoteDirectory() {
   const filteredData = banknotes.filter(
     (b) =>
       b.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      b.currency_code.toLowerCase().includes(searchTerm.toLowerCase()),
+      b.currency_code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      b.denomination.includes(searchTerm),
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6 md:p-10 font-sans text-slate-900 form-content-animate">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 p-4 md:p-8 lg:p-10 font-sans text-slate-900 dark:text-slate-100 animate-[fadeInUp_0.4s_ease-out] pb-24 transition-colors duration-300">
       <div className="max-w-7xl mx-auto space-y-8">
-        <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-            Southeast Asia Banknotes
-          </h1>
-          <p className="text-slate-500 mt-2 max-w-2xl">
-            Browse supported regional banknotes. Explore detailed metadata and
-            AI compatibility.
-          </p>
+        {/* HEADER */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="max-w-3xl">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight flex items-center gap-3 transition-colors">
+              <Layers className="w-8 h-8 text-teal-600 dark:text-teal-400" />
+              {text.title}
+            </h1>
+            <p className="text-slate-500 dark:text-slate-400 mt-3 text-lg leading-relaxed transition-colors">
+              {text.subtitle}
+            </p>
+          </div>
+
+          {/* 2. ĐỔI SỰ KIỆN CLICK SANG GỌI HÀM toggleTheme CỦA STORE */}
+          <button
+            onClick={toggleTheme}
+            className="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 transition-all self-start md:self-auto"
+            aria-label="Toggle Dark Mode"
+          >
+            {isDarkMode ? (
+              <Sun className="w-6 h-6" />
+            ) : (
+              <Moon className="w-6 h-6" />
+            )}
+          </button>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row gap-4 items-center">
+        {/* SEARCH BAR */}
+        <div className="bg-white dark:bg-slate-800 p-2 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 transition-colors">
           <div className="relative flex-1 w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500" />
             <input
               type="text"
-              placeholder="Search by country or currency code (e.g., VND, THB)..."
+              placeholder={text.searchPlaceholder}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500/50 text-sm"
+              className="w-full pl-12 pr-4 py-3.5 bg-transparent rounded-xl focus:outline-none focus:ring-0 text-slate-700 dark:text-slate-200 font-medium placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           </div>
         </div>
 
+        {/* CONTENT GRID */}
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
               <div
                 key={i}
-                className="h-64 bg-slate-100 animate-pulse rounded-3xl"
-              ></div>
+                className="h-[420px] bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 animate-pulse rounded-3xl shadow-sm transition-colors"
+              >
+                <div className="h-48 bg-slate-100 dark:bg-slate-700 rounded-t-3xl transition-colors"></div>
+                <div className="p-6 space-y-4">
+                  <div className="h-6 bg-slate-100 dark:bg-slate-700 rounded w-1/2 transition-colors"></div>
+                  <div className="h-4 bg-slate-100 dark:bg-slate-700 rounded w-1/3 transition-colors"></div>
+                  <div className="h-10 bg-slate-100 dark:bg-slate-700 rounded w-full mt-8 transition-colors"></div>
+                </div>
+              </div>
             ))}
           </div>
         ) : filteredData.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-3xl border border-slate-200">
-            <FileText className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-500 font-medium">
-              No banknotes match your search criteria.
+          <div className="text-center py-24 bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col items-center transition-colors">
+            <FileText className="w-16 h-16 text-slate-200 dark:text-slate-600 mb-4 transition-colors" />
+            <p className="text-slate-500 dark:text-slate-400 font-semibold text-lg transition-colors">
+              {text.noResults}
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {filteredData.map((note) => (
               <div
                 key={note.id}
-                className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col"
+                className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:border-teal-200 dark:hover:border-teal-500 transition-all duration-300 flex flex-col"
               >
-                <div className="h-40 bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-6 relative">
-                  <div className="text-teal-700 font-mono font-bold text-sm tracking-wider border border-teal-200/60 px-6 py-3 rounded-xl bg-teal-50/50">
-                    {note.currency_code} {note.denomination}
+                {/* KHU VỰC HIỂN THỊ ẢNH TỪ CLOUD */}
+                <div className="h-52 bg-slate-100 dark:bg-slate-700/50 flex items-center justify-center p-4 relative overflow-hidden border-b border-slate-100 dark:border-slate-700 transition-colors">
+                  {/* Badge hiển thị tiền tệ góc trái */}
+                  <div className="absolute top-4 left-4 z-10 bg-white/90 dark:bg-slate-900/90 backdrop-blur text-slate-700 dark:text-slate-200 font-black text-xs tracking-wider px-3 py-1.5 rounded-full shadow-sm border border-slate-200 dark:border-slate-600 transition-colors">
+                    {note.currency_code}
                   </div>
+
+                  {note.front_image_url ? (
+                    <img
+                      src={note.front_image_url}
+                      alt={`${note.denomination} ${note.currency_code}`}
+                      className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal drop-shadow-md group-hover:scale-110 transition-transform duration-500"
+                      onError={(e) => {
+                        // Nếu link ảnh hỏng, tự thay bằng icon
+                        e.target.onerror = null;
+                        e.target.src =
+                          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24' fill='none' stroke='%23cbd5e1' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='18' height='18' x='3' y='3' rx='2' ry='2'/%3E%3Ccircle cx='9' cy='9' r='2'/%3E%3Cpath d='m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21'/%3E%3C/svg%3E";
+                        e.target.className = "w-12 h-12 opacity-50";
+                      }}
+                    />
+                  ) : (
+                    // Nếu DB chưa có link ảnh
+                    <div className="flex flex-col items-center text-slate-400 dark:text-slate-500 gap-2 transition-colors">
+                      <ImageIcon className="w-10 h-10 opacity-50" />
+                      <span className="text-xs font-semibold uppercase tracking-wider">
+                        {text.noImage}
+                      </span>
+                    </div>
+                  )}
                 </div>
+
+                {/* THÔNG TIN CHI TIẾT */}
                 <div className="p-6 flex-1 flex flex-col">
-                  <div className="flex justify-between items-start mb-4">
+                  <div className="mb-5">
+                    <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight transition-colors">
+                      {new Intl.NumberFormat("vi-VN").format(note.denomination)}{" "}
+                      <span className="text-lg text-slate-500 dark:text-slate-400 font-bold">
+                        {note.currency_code}
+                      </span>
+                    </h3>
+                    <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mt-1.5 transition-colors">
+                      <MapPin className="w-4 h-4 text-teal-600 dark:text-teal-400" />{" "}
+                      {note.country}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 mb-6 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 transition-colors">
                     <div>
-                      <h3 className="text-lg font-bold text-slate-900">
-                        {note.denomination} {note.currency_code}
-                      </h3>
-                      <p className="text-sm text-slate-500 flex items-center gap-1 mt-1">
-                        <MapPin className="w-3.5 h-3.5" /> {note.country}
+                      <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest mb-1 transition-colors">
+                        {text.material}
+                      </p>
+                      <p className="font-bold text-slate-800 dark:text-slate-200 transition-colors">
+                        {note.material || "Unknown"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest mb-1 transition-colors">
+                        {text.series}
+                      </p>
+                      <p className="font-bold text-slate-800 dark:text-slate-200 transition-colors">
+                        {note.series_year || "Unknown"}
                       </p>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-y-3 mb-6 text-sm flex-1">
-                    <div>
-                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-                        Material
+
+                  {note.features && note.features.length > 0 && (
+                    <div className="mb-6">
+                      <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest mb-2 flex items-center gap-1 transition-colors">
+                        <Info size={12} /> {text.features}
                       </p>
-                      <p className="font-semibold text-slate-700 mt-0.5">
-                        {note.material}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-                        Series
-                      </p>
-                      <p className="font-semibold text-slate-700 mt-0.5">
-                        {note.series_year}
+                      <p className="text-sm text-slate-600 dark:text-slate-300 font-medium line-clamp-2 leading-relaxed transition-colors">
+                        {note.features[0]}{" "}
+                        {/* Chỉ hiển thị tính năng đầu tiên cho gọn */}
                       </p>
                     </div>
+                  )}
+
+                  <div className="mt-auto pt-2">
+                    <button
+                      onClick={() => navigate("/recognize")}
+                      className="w-full py-3.5 bg-slate-900 dark:bg-teal-600 hover:bg-slate-800 dark:hover:bg-teal-500 text-white font-bold rounded-xl text-sm transition-all active:scale-95 flex items-center justify-center gap-2 shadow-sm"
+                    >
+                      <ScanLine className="w-4 h-4 text-teal-400 dark:text-teal-200" />{" "}
+                      {text.btnScan}
+                    </button>
                   </div>
-                  <button
-                    onClick={() => navigate("/recognize")}
-                    className="w-full py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl text-sm transition-colors flex items-center justify-center gap-2 shadow-sm"
-                  >
-                    <ScanLine className="w-4 h-4" /> Scan Similar
-                  </button>
                 </div>
               </div>
             ))}

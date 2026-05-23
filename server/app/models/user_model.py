@@ -8,7 +8,8 @@ class User(Document):
     hashed_password: str
     full_name: str
     role: str = "user" # Có thể là 'user' hoặc 'admin'
-    
+    phone: Optional[str] = None
+    country: str = "Vietnam"
     # Quản lý Token (Mặc định tặng 5 token cho user mới)
     token_balance: int = 5 
     

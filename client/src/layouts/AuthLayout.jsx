@@ -6,7 +6,8 @@ import { useAppStore } from '../store/appStore';
 
 export default function AuthLayout() {
   const location = useLocation();
-  const isLogin = location.pathname.includes('login');
+  const isLogin = location.pathname.includes("login");
+  const isAdminLogin = location.pathname.includes("admin-login");
   
   const { theme, initTheme, lang } = useAppStore();
   const isDark = theme === 'dark';
@@ -16,7 +17,7 @@ export default function AuthLayout() {
   // 👇 LINK ẢNH NỀN BÊN CẠNH FORM (Bác có thể tự thay) 👇
   const loginBg = "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779085695/13_26_26_18_thg_5_2026_ic0ar6.png"; 
   const registerBg = "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779085978/ChatGPT_Image_13_31_38_18_thg_5_2026_ospg93.png";
-
+  const adminBg = "https://res.cloudinary.com/dg0qiq4zd/image/upload/v1779542096/ChatGPT_Image_20_13_15_23_thg_5_2026_rosfzj.png";
   return (
     <div className={`relative min-h-screen flex justify-center items-center p-0 md:p-4 font-sans overflow-hidden transition-colors duration-300 ${isDark ? 'bg-slate-950' : 'bg-slate-50'}`}>
       
@@ -60,7 +61,7 @@ export default function AuthLayout() {
         >
           <div 
             className={`absolute inset-0 bg-cover bg-center transition-all duration-[800ms] cubic-bezier-auth ${isLogin ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`}
-            style={{ backgroundImage: `url(${loginBg})` }}
+            style={{ backgroundImage: `url(${isAdminLogin ? adminBg : loginBg})` }}
           />
           <div 
             className={`absolute inset-0 bg-cover bg-center transition-all duration-[800ms] cubic-bezier-auth ${isLogin ? 'opacity-0 scale-105' : 'opacity-100 scale-100'}`}

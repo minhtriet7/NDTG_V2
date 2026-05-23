@@ -1,9 +1,7 @@
 import json
 import requests
-import time
 import asyncio
-import urllib.parse
-from selenium.webdriver.common.by import By
+from typing import Optional, List, Dict, Any
 
 from app.core.config import settings
 from app.agents.agent_2_llm import (
@@ -13,121 +11,203 @@ from app.agents.agent_2_llm import (
     MODEL_LLM_MAIN,
 )
 from app.agents.base_agent import BaseAgent
-from app.services.chrome_driver import ChromeDriver
 
 
 class Agent3Lens(BaseAgent):
-    def __init__(self):
-        super().__init__(agent_name="Agent 3 (Google Lens)")
+    """
+    Agent 3 - Google Lens via SerpApi.
 
-    def upload_to_imgbb(self, image_bytes: bytes):
+    Flow:
+    1. Upload ảnh lên ImgBB để có public image URL.
+    2. Gọi SerpApi Google Lens API với image URL.
+    3. Lấy visual_matches / exact_matches / knowledge_graph / text.
+    4. Đưa dữ liệu Lens cho Gemini format lại theo JSON_TEMPLATE.
+    5. Trả JSON cho aggregator vote cùng Agent 1 và Agent 2.
+
+    Ưu điểm so với Selenium:
+    - Không cần proxy.data.
+    - Không cần ChromeDriver.
+    - Không bị timeout vì selector Google Lens đổi.
+    - Trả JSON có cấu trúc.
+    """
+
+    def __init__(self):
+        super().__init__(agent_name="Agent 3 (Google Lens SerpApi)")
+
+    def upload_to_imgbb(self, image_bytes: bytes) -> Optional[str]:
         try:
+            if not settings.IMGBB_API_KEY:
+                print(f"[{self.agent_name}] Thiếu IMGBB_API_KEY")
+                return None
+
             upload_url = "https://api.imgbb.com/1/upload"
+
             res = requests.post(
                 upload_url,
                 data={"key": settings.IMGBB_API_KEY},
                 files={"image": image_bytes},
                 timeout=30,
             )
+
             data = res.json()
+
             if "data" in data and "url" in data["data"]:
                 return data["data"]["url"]
 
-            print(f"[{self.agent_name}] Loi ImgBB Response: {data}")
-            return None
-        except Exception as e:
-            print(f"[{self.agent_name}] Loi ImgBB Network: {e}")
+            print(f"[{self.agent_name}] Lỗi ImgBB Response: {data}")
             return None
 
-    def scrape_google_lens_selenium(self, image_url: str) -> list:
-        driver = None
-        results = []
+        except Exception as e:
+            print(f"[{self.agent_name}] Lỗi ImgBB Network: {e}")
+            return None
+
+    def _call_serpapi_google_lens(self, image_url: str) -> Dict[str, Any]:
+        """
+        Gọi SerpApi Google Lens.
+
+        Docs chính:
+        engine=google_lens
+        url=<public image url>
+        type=all / visual_matches / exact_matches / products
+        """
+        if not settings.SERPAPI_KEY:
+            raise RuntimeError("Thiếu SERPAPI_KEY trong settings.")
+
+        params = {
+            "engine": "google_lens",
+            "url": image_url,
+            "api_key": settings.SERPAPI_KEY,
+            "hl": "vi",
+            "country": "vn",
+            "type": "all",
+            "no_cache": "true",
+        }
+
+        response = requests.get(
+            "https://serpapi.com/search.json",
+            params=params,
+            timeout=45,
+        )
 
         try:
-            print(f"[{self.agent_name}] Dang khoi tao Selenium (Dung Proxy & Anti-detect)...")
+            data = response.json()
+        except Exception:
+            raise RuntimeError(f"SerpApi không trả JSON hợp lệ: {response.text[:500]}")
 
-            driver_manager = ChromeDriver()
-            driver = driver_manager.get_driver()
+        if response.status_code != 200:
+            raise RuntimeError(f"SerpApi HTTP {response.status_code}: {data}")
 
-            encoded_url = urllib.parse.quote(image_url)
-            direct_lens_url = f"https://lens.google.com/uploadbyurl?url={encoded_url}"
+        if "error" in data:
+            raise RuntimeError(f"SerpApi error: {data.get('error')}")
 
-            print(f"[{self.agent_name}] Truy cap he thong phan tich Google Lens...")
-            driver.get(direct_lens_url)
+        return data
 
-            print(f"[{self.agent_name}] Dang doi Lens render ket qua (5s)...")
-            time.sleep(5)
+    def _compact_serpapi_result(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Rút gọn dữ liệu SerpApi để đưa cho LLM.
+        Không đưa toàn bộ JSON quá dài vào prompt.
+        """
+        compact = {
+            "knowledge_graph": None,
+            "text_results": [],
+            "visual_matches": [],
+            "exact_matches": [],
+            "reverse_image_search": [],
+        }
 
-            print(f"[{self.agent_name}] Dang trich xuat ket qua...")
+        # Knowledge graph nếu có
+        kg = data.get("knowledge_graph")
+        if isinstance(kg, dict):
+            compact["knowledge_graph"] = {
+                "title": kg.get("title"),
+                "subtitle": kg.get("subtitle"),
+                "description": kg.get("description"),
+                "source": kg.get("source"),
+                "link": kg.get("link"),
+            }
 
-            result_elements = driver.find_elements(
-                By.CSS_SELECTOR,
-                "div[role='listitem'], div.GNCY8c, div.VCOFK",
-            )
+        # Text results nếu có
+        text_results = data.get("text_results") or data.get("text") or []
+        if isinstance(text_results, list):
+            for item in text_results[:10]:
+                if not isinstance(item, dict):
+                    continue
 
-            if result_elements:
-                for el in result_elements:
-                    try:
-                        title_el = el.find_element(
-                            By.CSS_SELECTOR,
-                            "div[data-item-title='true'], .m76pS, .fXU79e",
-                        )
-                        title = title_el.text.strip()
-                        link_el = el.find_element(By.TAG_NAME, "a")
-                        href = link_el.get_attribute("href")
+                compact["text_results"].append({
+                    "text": item.get("text") or item.get("title"),
+                    "link": item.get("link"),
+                })
 
-                        item = {"title": title, "url": href}
-                        if href and title and item not in results:
-                            results.append(item)
+        # Visual matches
+        visual_matches = data.get("visual_matches") or []
+        if isinstance(visual_matches, list):
+            for item in visual_matches[:12]:
+                if not isinstance(item, dict):
+                    continue
 
-                        if len(results) >= 10:
-                            break
-                    except Exception:
-                        continue
+                compact["visual_matches"].append({
+                    "title": item.get("title"),
+                    "source": item.get("source"),
+                    "link": item.get("link"),
+                    "snippet": item.get("snippet"),
+                })
 
-            if not results:
-                links = driver.find_elements(By.TAG_NAME, "a")
-                for link in links:
-                    try:
-                        href = link.get_attribute("href")
-                        title = link.text.strip()
+        # Exact matches
+        exact_matches = data.get("exact_matches") or []
+        if isinstance(exact_matches, list):
+            for item in exact_matches[:12]:
+                if not isinstance(item, dict):
+                    continue
 
-                        item = {"title": title, "url": href}
-                        if (
-                            href
-                            and "google.com" not in href
-                            and title
-                            and len(title) > 5
-                            and item not in results
-                        ):
-                            results.append(item)
+                compact["exact_matches"].append({
+                    "title": item.get("title"),
+                    "source": item.get("source"),
+                    "link": item.get("link"),
+                    "snippet": item.get("snippet"),
+                })
 
-                        if len(results) >= 10:
-                            break
-                    except Exception:
-                        continue
+        # Reverse image search / image sources nếu có
+        image_sources = (
+            data.get("image_sources")
+            or data.get("reverse_image_search")
+            or []
+        )
 
-            return results
+        if isinstance(image_sources, list):
+            for item in image_sources[:10]:
+                if not isinstance(item, dict):
+                    continue
 
-        except Exception as e:
-            print(f"[{self.agent_name}] Loi Scrape Selenium Lens: {str(e)}")
-            return []
+                compact["reverse_image_search"].append({
+                    "title": item.get("title"),
+                    "source": item.get("source"),
+                    "link": item.get("link"),
+                })
 
-        finally:
-            if driver:
-                try:
-                    driver.quit()
-                except Exception:
-                    pass
+        return compact
+
+    def _has_useful_lens_data(self, compact: Dict[str, Any]) -> bool:
+        """
+        Kiểm tra Lens có dữ liệu đáng dùng không.
+        """
+        if compact.get("knowledge_graph"):
+            return True
+
+        for key in ["text_results", "visual_matches", "exact_matches", "reverse_image_search"]:
+            items = compact.get(key)
+            if isinstance(items, list) and len(items) > 0:
+                return True
+
+        return False
 
     def build_visual_search_result(
         self,
-        raw_lens_text: str = None,
-        formatted_result: dict = None,
-        error: Exception = None,
+        raw_lens_text: Optional[str] = None,
+        formatted_result: Optional[dict] = None,
+        error: Optional[Exception] = None,
     ) -> str:
         """
-        If Lens raw text exists but LLM formatting fails, return Partial instead of Failed.
+        Trả JSON đúng format cho aggregator.
         """
         if formatted_result:
             formatted_result["status"] = formatted_result.get("status", "Completed")
@@ -143,21 +223,35 @@ class Agent3Lens(BaseAgent):
                 "chat_lieu": "Không xác định",
                 "mo_ta": raw_lens_text[:500],
                 "quan_diem": (
-                    "Google Lens đã trả về dữ liệu thô, nhưng bước format bằng LLM gặp lỗi. "
+                    "Google Lens/SerpApi đã trả về dữ liệu thô, nhưng bước format bằng LLM không chốt được. "
                     "Hệ thống giữ raw_text để hỗ trợ đối chiếu thủ công."
                 ),
-                "phuong_phap": "Google Lens raw fallback",
+                "phuong_phap": "Google Lens SerpApi raw fallback",
+                "do_tin_cay": 0.25,
+                "van_ban_nhin_thay": [],
+                "dac_diem_chinh": [],
                 "status": "Partial",
                 "raw_text": raw_lens_text,
             }
             return json.dumps([fallback_data], ensure_ascii=False)
 
-        return self.get_error_response(f"Google Lens không lấy được dữ liệu hữu ích. {error or ''}")
+        failed_data = {
+            "quoc_gia": "Lỗi",
+            "menh_gia": "Lỗi",
+            "mat_tien": "Lỗi",
+            "nam_phat_hanh": "Lỗi",
+            "chat_lieu": "Lỗi",
+            "mo_ta": "Lỗi",
+            "quan_diem": f"{self.agent_name} gặp sự cố: {error or 'Không lấy được dữ liệu Google Lens.'}",
+            "phuong_phap": self.agent_name,
+            "do_tin_cay": 0.0,
+            "van_ban_nhin_thay": [],
+            "dac_diem_chinh": [],
+            "status": "Failed",
+        }
+        return json.dumps([failed_data], ensure_ascii=False)
 
     def parse_formatted_result(self, formatted_json_text: str, raw_lens_data: str) -> str:
-        """
-        clean_json may return a JSON string. Validate it and attach status/raw_text.
-        """
         try:
             parsed = json.loads(formatted_json_text)
             item = parsed[0] if isinstance(parsed, list) and parsed else parsed
@@ -165,80 +259,148 @@ class Agent3Lens(BaseAgent):
             if not isinstance(item, dict):
                 return self.build_visual_search_result(raw_lens_text=raw_lens_data)
 
-            item["status"] = item.get("status", "Completed")
+            item.setdefault("quoc_gia", "Không xác định")
+            item.setdefault("menh_gia", "Không xác định")
+            item.setdefault("mat_tien", "Không xác định")
+            item.setdefault("nam_phat_hanh", "Không xác định")
+            item.setdefault("chat_lieu", "Không xác định")
+            item.setdefault("mo_ta", "Không có mô tả.")
+            item.setdefault("quan_diem", "Không có lập luận.")
+            item.setdefault("phuong_phap", "Google Lens SerpApi")
+            item.setdefault("do_tin_cay", 0.5)
+            item.setdefault("van_ban_nhin_thay", [])
+            item.setdefault("dac_diem_chinh", [])
+            item.setdefault("status", "Completed")
+
             item["raw_text"] = raw_lens_data
+
             return json.dumps([item], ensure_ascii=False)
 
         except Exception as e:
-            print(f"[{self.agent_name}] Loi parse formatted Lens result: {e}")
+            print(f"[{self.agent_name}] Lỗi parse formatted Lens result: {e}")
             return self.build_visual_search_result(raw_lens_text=raw_lens_data, error=e)
+
+    async def _format_lens_results_with_llm(
+        self,
+        compact_lens_data: Dict[str, Any],
+        context: str = "",
+    ) -> str:
+        """
+        Dùng Gemini để chắt lọc kết quả Lens thành JSON chung.
+        """
+        raw_lens_data = json.dumps(compact_lens_data, ensure_ascii=False, indent=2)
+
+        prompt_format = f"""
+Bạn là Agent 3 trong hệ thống nhận diện tiền giấy.
+
+Dữ liệu dưới đây là kết quả Google Lens lấy qua SerpApi:
+{raw_lens_data}
+
+Nhiệm vụ:
+- Dựa trên tiêu đề, nguồn, link, snippet, exact matches, visual matches, knowledge graph nếu có.
+- Suy luận xem ảnh là tờ tiền nào.
+- Chỉ nhận định khi dữ liệu Lens thật sự liên quan đến tiền giấy.
+- Nếu dữ liệu không đủ liên quan đến tiền giấy, trả "Không xác định".
+- Không được bịa mệnh giá nếu Lens không có bằng chứng.
+- Ưu tiên các nguồn có tiêu đề/link/snippet nhắc đến banknote, currency, VND, Vietnam, money, tiền, đồng, mệnh giá.
+- Nếu có nhiều kết quả mâu thuẫn, nêu rõ trong "quan_diem".
+
+Context từ vòng tranh biện trước nếu có:
+{context}
+
+Format bắt buộc:
+{JSON_TEMPLATE}
+
+Quy tắc:
+- Chỉ trả JSON hợp lệ.
+- Không markdown.
+- Field "phuong_phap" ghi: "Google Lens SerpApi".
+- Field "do_tin_cay" từ 0.0 đến 1.0.
+"""
+
+        response = await asyncio.to_thread(
+            gemini_client.models.generate_content,
+            model=MODEL_LLM_MAIN,
+            contents=[prompt_format],
+        )
+
+        return clean_json(response.text or "")
 
     async def run(self, image_bytes: bytes, context: str = "") -> str:
         if not settings.IMGBB_API_KEY:
-            return self.get_error_response("Thiếu API Key ImgBB")
-
-        try:
-            image_url = self.upload_to_imgbb(image_bytes)
-            if not image_url:
-                return self.get_error_response("Lỗi Upload ImgBB. Không lấy được link ảnh.")
-
-            results = await asyncio.to_thread(self.scrape_google_lens_selenium, image_url)
-
-            if not results:
-                return self.get_error_response("Selenium không tìm thấy thông tin hữu ích từ Google Lens.")
-
-            raw_lens_data = " || ".join(
-                [f"{r['title']} - {r['url']}" for r in results]
+            return self.build_visual_search_result(
+                error=Exception("Thiếu IMGBB_API_KEY")
             )
 
-            print(f"[{self.agent_name}] Da quet xong du lieu, dang gui cho LLM format lai...")
+        if not settings.SERPAPI_KEY:
+            return self.build_visual_search_result(
+                error=Exception("Thiếu SERPAPI_KEY")
+            )
 
-            prompt_format = f"""
-Dưới đây là thông tin Google Lens quét được:
-"{raw_lens_data}"
+        try:
+            print(f"[{self.agent_name}] Upload ảnh lên ImgBB...")
+            image_url = await asyncio.to_thread(self.upload_to_imgbb, image_bytes)
 
-Dựa vào các tiêu đề và đường link này, hãy chắt lọc thông tin tờ tiền và xuất ĐÚNG CẤU TRÚC JSON.
-Nếu không đủ dữ liệu để xác định mệnh giá, hãy ghi "Không xác định", không được tự đoán.
-Mục "phuong_phap" bắt buộc ghi là "Google Lens (Selenium/Proxy)".
+            if not image_url:
+                return self.build_visual_search_result(
+                    error=Exception("Upload ImgBB thất bại, không có image_url.")
+                )
 
-{JSON_TEMPLATE}
-"""
+            print(f"[{self.agent_name}] Gọi SerpApi Google Lens...")
+            serpapi_data = await asyncio.to_thread(
+                self._call_serpapi_google_lens,
+                image_url,
+            )
+
+            compact_data = self._compact_serpapi_result(serpapi_data)
+
+            if not self._has_useful_lens_data(compact_data):
+                return self.build_visual_search_result(
+                    error=Exception("SerpApi Google Lens không trả dữ liệu hữu ích.")
+                )
+
+            raw_lens_data = json.dumps(compact_data, ensure_ascii=False)
+
+            print(f"[{self.agent_name}] Đã có dữ liệu Lens, đang format bằng LLM...")
 
             last_error = None
 
-            for attempt in range(3):
+            for attempt in range(2):
                 try:
-                    res = gemini_client.models.generate_content(
-                        model=MODEL_LLM_MAIN,
-                        contents=[prompt_format],
+                    formatted_text = await self._format_lens_results_with_llm(
+                        compact_data,
+                        context=context,
                     )
-                    print(f"[{self.agent_name}] Hoan tat format Lens!")
-                    formatted_text = clean_json(res.text)
+                    print(f"[{self.agent_name}] Hoàn tất format Lens!")
                     return self.parse_formatted_result(formatted_text, raw_lens_data)
 
                 except Exception as e:
                     last_error = e
                     error_text = str(e)
-                    print(f"[{self.agent_name}] Lens formatter failed attempt {attempt + 1}: {error_text}")
+                    print(f"[{self.agent_name}] Lens formatter failed attempt {attempt + 1}/2: {error_text}")
 
-                    if "503" in error_text or "429" in error_text or "RESOURCE_EXHAUSTED" in error_text:
-                        time.sleep(2)
+                    if (
+                        "503" in error_text
+                        or "429" in error_text
+                        or "RESOURCE_EXHAUSTED" in error_text
+                        or "quota" in error_text.lower()
+                    ):
+                        await asyncio.sleep(2)
                         continue
 
-                    # Even for non-quota formatter errors, keep raw Lens data.
                     return self.build_visual_search_result(
                         raw_lens_text=raw_lens_data,
                         error=e,
                     )
 
-            # Formatter failed after retries, but raw Lens data exists.
             return self.build_visual_search_result(
                 raw_lens_text=raw_lens_data,
                 error=last_error,
             )
 
         except Exception as e:
-            return self.get_error_response(str(e))
+            print(f"[{self.agent_name}] Lỗi tổng: {e}")
+            return self.build_visual_search_result(error=e)
 
 
 async def run_agent3_lens(image_bytes: bytes, context: str = "") -> str:

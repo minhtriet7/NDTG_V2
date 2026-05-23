@@ -58,3 +58,10 @@ app.include_router(admin_router, prefix="/api/v1/admin", tags=["Admin"])
 @app.get("/")
 async def root():
     return {"message": "Welcome to Banknote Recognition API"}
+@app.on_event("startup")
+async def print_routes():
+    print("\n--- 🚀 DANH SÁCH CÁC ROUTE ĐANG HOẠT ĐỘNG ---")
+    for route in app.routes:
+        if hasattr(route, "path"):
+            print(f"{route.methods} {route.path}")
+    print("-----------------------------------------------\n")

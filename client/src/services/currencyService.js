@@ -3,23 +3,17 @@ import api from './api';
 // 1. API lấy tỷ giá chuyển đổi
 export const getRates = async () => {
   try {
+    // Bây giờ gọi API sẽ thành công 200 OK (Không còn 404 nữa)
     const res = await api.get('/currency/rates');
     return res.data;
   } catch (error) {
-    // Trả về dữ liệu Fallback cấu trúc chuẩn xác để thẻ <select> đọc được
+    console.warn("⚠️ API Tỷ giá lỗi, đang dùng dữ liệu dự phòng (Fallback).");
     return {
       base: 'USD',
       source: 'Indicative Regional Rates (Fallback)',
       rates: { 
-        USD: 1, 
-        VND: 25450, 
-        THB: 36.8, 
-        SGD: 1.35, 
-        MYR: 4.75, 
-        IDR: 16100, 
-        PHP: 57.2, 
-        KHR: 4100, 
-        LAK: 21000 
+        USD: 1, VND: 25450, THB: 36.8, SGD: 1.35, MYR: 4.75, 
+        IDR: 16100, PHP: 57.2, KHR: 4100, LAK: 21000 
       }
     };
   }
